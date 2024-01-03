@@ -1,0 +1,765 @@
+<html>
+  <head>
+    <title> gtrenblog </title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Roboto+Mono:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&family=Silkscreen:wght@400;700&family=Trade+Winds&display=swap');
+
+      :root {
+        --main: 255, 170, 60;
+        --alt: 120, 75, 20;
+        --black: #12100d;
+        --title-font: 'Trade Winds', 'Copperplate', 'Papyrus', fantasy;
+        --main-font: 'Roboto Mono', monospace;
+        --mono-font: 'Silkscreen', monospace;
+        --cursive-font: 'Caveat', cursive;
+        --filter: unset;
+      }
+
+      body {
+        font-family: var(--main-font);
+        background: var(--black);
+        color: rgb(var(--main));
+      }
+
+      *,
+      *::before,
+      *::after {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(var(--main)) transparent;
+      }
+
+      *::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      *::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      *::-webkit-scrollbar-thumb {
+        border-radius: 0;
+        background-color: rgb(var(--main));
+        border: 2px solid transparent;
+      }
+
+      ::selection {
+        background-color: rgba(var(--alt), 0.7);
+        color: rgb(var(--main));
+      }
+
+      img {
+        image-rendering: auto;
+        max-width: 100%;
+        display: block;
+        filter: var(--filter);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 0.5em 0;
+        line-height: 1.15em;
+      }
+
+      p {
+        margin: 1em 0;
+      }
+
+      ul {
+        list-style: square;
+        padding-left: 1em;
+      }
+
+      ul em {
+        font-family: var(--mono-font);
+        font-style: normal;
+      }
+
+      .img,
+      article>div>img,
+      article>div>p>img {
+        border: 2px solid rgb(var(--main));
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.5);
+        position: relative;
+        display: block;
+      }
+
+      .img.right,
+      .img.left {
+        float: left;
+        width: 40%;
+        margin: 1em;
+        margin-left: 0;
+      }
+
+      .img.right {
+        float: right;
+        margin-left: 1em;
+        margin-right: 0;
+      }
+
+      .img::after {
+        content: "";
+        background-color: rgba(0, 0, 0, 0.75);
+        background-image: var(--img);
+        background-size: auto calc(100% - 8px);
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        min-height: 100%;
+        max-height: calc(100vh - 200px);
+        z-index: 9;
+        border: inherit;
+        top: -2px;
+        left: -2px;
+        box-shadow: 0 15px 20px rgba(0, 0, 0, 0.75);
+        pointer-events: none;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .img:hover::after {
+        opacity: 1;
+        width: 200%;
+        height: 200%;
+      }
+
+      .img:not(.left, .right)::after {
+        display: none;
+      }
+
+      @media only screen and (min-width: 768px) {
+        .img img {
+          mix-blend-mode: color-dodge;
+          opacity: 0.8;
+        }
+      }
+
+      #page hr {
+        color: inherit;
+        text-align: inherit;
+      }
+
+      #page hr::after {
+        text-align: inherit;
+      }
+
+      #page details blockquote {
+        position: absolute;
+        width: calc(100% - 7em);
+        bottom: 100%;
+        left: 3.5em;
+        background: var(--black);
+        margin: 0;
+        max-height: calc(100vh - 8em);
+        overflow-y: auto;
+        border-bottom: none;
+      }
+
+      details summary {
+        cursor: pointer;
+        user-select: none;
+        text-transform: uppercase;
+        max-width: max-content;
+        margin: 0 auto;
+      }
+
+      details summary,
+      #page a {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        padding: 0.25em 0.5em;
+        position: relative;
+        outline: 2px solid transparent;
+      }
+
+      #page a:hover,
+      #page a:active,
+      details summary:hover,
+      details summary:active,
+      details[open] summary {
+        background: rgba(var(--alt), 0.25);
+        color: inherit;
+        outline-color: currentcolor;
+      }
+
+      details summary::before,
+      details summary::after,
+      #page .fork a::before,
+      #page .fork a::after {
+        content: "[";
+        transition: inherit;
+        opacity: 0;
+        width: 1em;
+        padding: 0 0.25em;
+        text-align: right;
+        display: inline-block;
+      }
+
+      details summary::after,
+      #page .fork a::after {
+        content: "]";
+        text-align: left;
+      }
+
+      details summary:hover::before,
+      details summary:hover::after,
+      #page .fork a:hover::before,
+      #page .fork a:hover::after {
+        opacity: 1;
+        padding: 0;
+      }
+
+      #page .fork a {
+        margin-bottom: 10px;
+        border: none !important;
+        outline: 2px solid rgba(var(--main), 0.5);
+      }
+
+      #page .fork a:hover {
+        outline-color: currentcolor;
+      }
+
+      footer .right,
+      footer .left {
+        position: absolute;
+      }
+
+      footer .left {
+        left: 2em;
+      }
+
+      footer .right {
+        right: 2em;
+      }
+
+      #backdrop {
+        background: black;
+      }
+
+      #page {
+        background: transparent;
+        color: rgb(var(--main));
+        font-family: var(--main-font);
+        border: 1.25em solid black;
+        margin: 1em auto;
+        position: relative;
+        z-index: 9;
+        text-shadow: 0rem 0.2rem 1rem currentColor;
+        font-size: 16px;
+        width: 50em;
+        padding-bottom: 0 !important;
+      }
+
+      #page::after {
+        content: "";
+        position: absolute;
+        z-index: -3;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--black);
+      }
+
+      #page::before {
+        content: "";
+        position: fixed;
+        pointer-events: none;
+        z-index: 10;
+        width: 50em;
+        height: calc(100vh - 2em);
+        top: 1em;
+        left: 50%;
+        transform: translatex(-50%);
+        box-shadow: inset 0 0 24rem black, inset 0 0 5rem black, 0 0 16rem black,
+          0 2em 0 #0b0906,
+          0 -2em 0 #0b0906;
+        border: 1.25em solid;
+        border-bottom-color: #0f0e0d;
+        border-left-color: #080807;
+        border-right-color: #080807;
+        border-top-color: #040403;
+        border-radius: 1.5em;
+      }
+
+      #page article {
+        height: 100%;
+      }
+
+      #page article>div {
+        width: calc(100% + 4em) !important;
+        margin: 0 -2em;
+        padding: 0 2em;
+        max-height: calc(100vh - 12em);
+        overflow-y: auto;
+      }
+
+      #backdrop #page header {
+        border-bottom: 2px solid;
+        padding-bottom: 0.5em;
+      }
+
+      #backdrop #page footer {
+        border-top: 2px solid;
+        position: sticky;
+        bottom: 2em;
+        padding: 0.5em 2em;
+        margin: 0 -4em;
+        background: var(--black);
+      }
+
+      #page header::before,
+      #page header::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+      }
+
+      #page header::before {
+        background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 70%,
+            rgba(0, 0, 0, 0.6));
+        background-size: 100% 0.5rem;
+      }
+
+      #page header::after {
+        animation: crt-glow 60s infinite;
+        background: radial-gradient(circle at center,
+            rgb(var(--main)) 0%,
+            rgba(var(--alt), 0.78) 58%,
+            rgba(var(--alt), 0.55) 80%,
+            rgba(var(--alt), 0.27) 93%,
+            rgba(var(--alt), 0) 100%);
+        opacity: 0.15;
+        pointer-events: none;
+        position: fixed;
+      }
+
+      #page footer p,
+      #page header p {
+        margin: 0;
+      }
+
+      #page header p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+      }
+
+      #page header .left {
+        position: relative;
+      }
+
+      @keyframes crt-glow {
+        0% {
+          opacity: 0.1;
+        }
+
+        50% {
+          opacity: 0.2;
+        }
+
+        100% {
+          opacity: 0.1;
+        }
+      }
+
+      @media only screen and (min-width: 767px) {
+        .backstage-visible #page::before {
+          left: calc(50% - 16.5vw);
+        }
+
+        #backdrop #page header {
+          margin-top: -2em;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        #page::before {
+          width: 100%;
+          height: 100%;
+          left: 0;
+          transform: unset;
+          z-index: -1;
+          border: none;
+          top: 0;
+        }
+
+        #page article>div {
+          margin: 0 -1em;
+        }
+
+        #page article>div {
+          padding: 0 1em;
+          width: calc(100% + 2em) !important;
+          max-height: calc(100vh - 8em);
+          margin-bottom: 3em !important;
+        }
+
+        details blockquote {
+          width: calc(100% - 3em);
+          left: 1.5em;
+        }
+
+        #page {
+          margin: 0;
+          border: none;
+          padding: 2em;
+        }
+
+        #backdrop #page footer {
+          margin: 0;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+        }
+
+        #page details blockquote {
+          width: calc(100% - 4.5em);
+          left: 2em;
+        }
+      }
+
+      h1,
+      .title {
+        font-family: var(--title-font);
+      }
+
+      h1 {
+        font-size: 2.5em;
+      }
+
+      .mono {
+        font-family: var(--mono-font);
+        font-size: 0.85em;
+      }
+
+      .cursive {
+        font-family: var(--cursive-font);
+        font-size: 1.5em;
+      }
+
+      blockquote {
+        display: block;
+        position: relative;
+        padding: 1em;
+        border-top: 2px solid;
+        border-bottom: 2px solid;
+        margin: 1em 0;
+        clear: both;
+      }
+
+      blockquote::before,
+      blockquote::after {
+        position: absolute;
+        content: "";
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(to bottom, rgb(var(--main)) 0%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 65%, rgb(var(--main)) 100%);
+        top: 0;
+        left: 0;
+      }
+
+      blockquote::after {
+        left: unset;
+        right: 0;
+      }
+
+      #map blockquote::before,
+      #map blockquote::after {
+        display: none;
+      }
+
+      #map blockquote {
+        border: 2px solid;
+        border-bottom: none;
+      }
+
+      #map img {
+        transition: all 0.4s ease;
+        user-drag: none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+      }
+
+      #map button {
+        appearance: none;
+        border: none;
+        background: transparent;
+        cursor: grab;
+      }
+
+      #map button:active {
+        cursor: grabbing;
+      }
+
+      .mono ul {
+        margin: 0.5em 0;
+        list-style: square;
+        padding-left: 1.5em;
+      }
+
+      .fliptext {
+        width: 100%;
+        text-align: center;
+        margin: 1em 0;
+        transform: scalex(-1);
+      }
+
+      #page footer {
+        position: relative;
+        z-index: 3;
+      }
+
+      #page footer a {
+        display: block;
+      }
+
+      header .center img {
+        position: absolute;
+        max-width: unset;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      @media only screen and (max-width: 768px) {
+        header .center img {
+          position: fixed;
+          border-radius: 1.5em;
+        }
+      }
+
+      header.left {
+        position: relative;
+      }
+
+      .fade-a {
+        animation: fade-swap 8s infinite;
+        animation-delay: -4s;
+        opacity: 1;
+      }
+
+      .fade-b {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        animation: fade-swap 8s infinite;
+      }
+
+      @keyframes fade-swap {
+        0% {
+          opacity: 0;
+          color: rgb(var(--alt));
+        }
+
+        20% {
+          opacity: 0;
+          color: rgb(var(--alt));
+        }
+
+        30% {
+          opacity: 1;
+          color: rgb(var(--main));
+        }
+
+        65% {
+          opacity: 1;
+          color: rgb(var(--main));
+        }
+
+        75% {
+          opacity: 0;
+          color: rgb(var(--alt));
+        }
+
+        100% {
+          opacity: 0;
+          color: rgb(var(--alt));
+        }
+      }
+
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 10px -5px;
+      }
+
+      .options input {
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+        margin: 0;
+      }
+
+      .options label {
+        outline: 1px solid rgb(var(--main));
+        padding: 5px;
+        text-align: center;
+        transition: all 0.1s ease;
+        margin: 5px;
+        flex-grow: 1;
+        cursor: pointer;
+      }
+
+      .options label:hover,
+      .options a:hover,
+      .options label:focus {
+        outline: 2px solid currentColor;
+        background: rgba(var(--alt), 0.25);
+      }
+
+      .options input:checked+label {
+        color: var(--black);
+        background: rgb(var(--main), 0.8);
+      }
+
+      html.amber {
+        --main: 255, 170, 60;
+        --alt: 120, 75, 20;
+        --black: #12100d;
+        --filter: unset;
+      }
+
+      html.white {
+        --main: 200, 220, 250;
+        --alt: 90, 100, 150;
+        --black: #191c1d;
+        --filter: sepia(1) saturate(0.25) hue-rotate(180deg);
+      }
+
+      html.red {
+        --main: 255, 40, 0;
+        --alt: 160, 20, 0;
+        --black: #191111;
+        --filter: sepia(1) saturate(7) brightness(0.65) hue-rotate(-35deg);
+      }
+
+      html.green {
+        --main: 0, 230, 50;
+        --alt: 0, 160, 30;
+        --black: #11140e;
+        --filter: sepia(1) saturate(5) brightness(0.85) hue-rotate(65deg);
+      }
+
+      html.blue {
+        --main: 80, 180, 255;
+        --alt: 40, 100, 180;
+        --black: #101419;
+        --filter: sepia(1) saturate(5) hue-rotate(165deg);
+      }
+    </style>
+    <link rel="stylesheet" href="https://cybersandbox.ca/game/assets/chapbook.css">
+  </head>
+  <body>
+    <form id="cb-validation">
+      <div id="backdrop">
+        <div id="page" aria-live="polite">
+          <header class="has-content">
+            <div class="left">
+              <div>
+                <p>
+                  <span class="fade-a">gtrenblog.</span>
+                  <span class="fade-b">
+                    <i>i maybe dead.</i>
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="center">
+              <div></div>
+            </div>
+            <div class="right">
+              <div>
+                <p>
+                  <b>Year: 2412</b>
+                </p>
+              </div>
+            </div>
+          </header>
+          <article style="position: relative;">
+            <div class="" style="">
+              <hr>
+              <p>Hello, everyone! In this blog post, I want to share with how I made a project called CarbonCrush, a web app that tracks and suggests how to remove carbon emissions from a company's daily activities. I hope you find this useful. <strong>
+                  <i>(i still dont know how you'll find this useful but it was cool to write so i wrote it.)</i>
+                </strong>
+              </p>
+              <p>Climate change is one of the biggest challenged facing humanity today. It is caused by the accumulation of greenhouse gases, such as carbon dioxide, in the atmosphere, hich trap heat and warm the planet. According to the IPCC, we need to limit global warming to 1.5°C above pre-industrial levels to acoid the most severe impacts of climate change, such as extreme weather, sea level rise, biodiversity loss, and food insecurity.</p>
+              <p>However, achieving this goal requires a rapid and deep reduction of greenhouse gas emissions, especially from the energy, transport, and industry sectors, which amount for more than two-thirds of global emissions. This means that we need to change the way we produce and consume energy, and adopt more sustainable and low-carbon lifestyles.</p>
+              <p>CarbonCrush is a webapp that tracks and suggests how to remove carbon emissions a company/community's daily activites. As of right now, THis project is still in development and a prototype will be released soon. <strong>
+                  <i>(from the time i'm writing this 3/1/24, prolly 5/1/24) </strong>
+                </i>
+              </p>
+              <p>I've learnt a lot from this project, both technically and personally. </p>
+              <blockquote class="mono">
+                <b>Some of the lessons I learned are:</b>
+                <ul>
+                  <li>How to use various tools and technologies to create a full-stack web app from the front-end to the back-end, from the database to the deployment.</li>
+                  <li> How to work on a real-world problem and create a social impact. </li>
+                </ul>
+              </blockquote>
+              <p>that's it for this blog ig see y'all soon!</p>
+            </div>
+          </article>
+          <ul class="warnings" hidden=""></ul>
+          <footer class="has-content">
+            <div class="left">
+              <div>
+                <p>v0.1-beta</p>
+              </div>
+            </div>
+            <div class="center">
+              <div>
+                <div>
+                  <details id="map">
+                    <summary>Author</summary>
+                    <blockquote>
+                      <p> Sup! I'm the author of gtrenblog. My name is Aarush and I do random stuff. <a href='https://instagram.com/_aarxsh/'>@_aarxsh</a>
+                    </blockquote>
+                  </details>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <p>3/1/24</p>
+              <div></div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
